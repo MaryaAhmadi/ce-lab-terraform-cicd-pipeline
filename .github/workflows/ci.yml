@@ -28,7 +28,6 @@ jobs:
           terraform_version: ${{ env.TF_VERSION }}
 
       - name: Terraform Format Check
-        id: fmt
         run: terraform fmt -check -recursive
 
       - name: Terraform Init
@@ -38,12 +37,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
-        id: validate
         run: terraform validate -no-color
 
       - name: Terraform Plan
-        id: plan
-        run: terraform plan -input=false -no-color -out=tfplan
+        run: terraform plan -input=false -no-color -out=tfplan | tee plan.txt
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -53,7 +50,8 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           script: |
-            const plan = `${{ steps.plan.outputs.stdout }}`;
+            const fs = require('fs');
+            const plan = fs.readFileSync('plan.txt', 'utf8');
             const truncated = plan.length > 60000
               ? plan.substring(0, 60000) + "\n\n... (truncated)"
               : plan;

@@ -90,3 +90,4 @@ Complete the lab as described in the instructions and save your work in this rep
 
 Submit your repository URL through the course platform. -->
 
+CI retry after refreshing AWS secrets

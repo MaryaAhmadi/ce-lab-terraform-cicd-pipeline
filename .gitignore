@@ -1,19 +1,9 @@
-# Terraform
 .terraform/
 *.tfstate
-*.tfstate.*
+*.tfstate.backup
+*.tfplan
 .terraform.lock.hcl
 crash.log
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-.terraformrc
-terraform.rc
-
-# IDE
 .vscode/
 .idea/
-
-# OS
 .DS_Store
